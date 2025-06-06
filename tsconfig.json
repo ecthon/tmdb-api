@@ -23,6 +23,6 @@
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "prisma/generated"],
   "exclude": ["node_modules", "dist", "**/*.test.ts"]
 }

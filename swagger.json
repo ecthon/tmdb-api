@@ -1,0 +1,145 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "TMDB API",
+    "version": "1.0.0",
+    "description": "API para gerenciamento de dados de filmes TMDB"
+  },
+  "servers": [
+    {
+      "url": "/api/movies"
+    }
+  ],
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Listar todos os filmes",
+        "parameters": [
+          {"name": "page", "in": "query", "schema": {"type": "integer"}, "description": "Página de resultados"},
+          {"name": "limit", "in": "query", "schema": {"type": "integer"}, "description": "Limite de resultados por página"},
+          {"name": "title", "in": "query", "schema": {"type": "string"}, "description": "Filtrar por título"},
+          {"name": "status", "in": "query", "schema": {"type": "string"}, "description": "Filtrar por status"},
+          {"name": "year", "in": "query", "schema": {"type": "integer"}, "description": "Filtrar por ano"},
+          {"name": "adult", "in": "query", "schema": {"type": "boolean"}, "description": "Filtrar por conteúdo adulto"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de filmes",
+            "content": {
+              "application/json": {
+                "schema": {"type": "object"}
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Criar novo filme",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/CreateMovieDto"}
+            }
+          }
+        },
+        "responses": {
+          "201": {"description": "Filme criado"},
+          "400": {"description": "Filme já existe ou dados inválidos"}
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "summary": "Buscar filmes por termo",
+        "parameters": [
+          {"name": "q", "in": "query", "required": true, "schema": {"type": "string"}, "description": "Termo de busca"}
+        ],
+        "responses": {
+          "200": {"description": "Filmes encontrados"},
+          "400": {"description": "Parâmetro de busca obrigatório"}
+        }
+      }
+    },
+    "/{id}": {
+      "get": {
+        "summary": "Buscar filme por ID",
+        "parameters": [
+          {"name": "id", "in": "path", "required": true, "schema": {"type": "string"}}
+        ],
+        "responses": {
+          "200": {"description": "Filme encontrado"},
+          "404": {"description": "Filme não encontrado"}
+        }
+      },
+      "put": {
+        "summary": "Atualizar filme",
+        "parameters": [
+          {"name": "id", "in": "path", "required": true, "schema": {"type": "string"}}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/UpdateMovieDto"}
+            }
+          }
+        },
+        "responses": {
+          "200": {"description": "Filme atualizado"},
+          "404": {"description": "Filme não encontrado"}
+        }
+      },
+      "delete": {
+        "summary": "Deletar filme",
+        "parameters": [
+          {"name": "id", "in": "path", "required": true, "schema": {"type": "string"}}
+        ],
+        "responses": {
+          "204": {"description": "Filme deletado"},
+          "404": {"description": "Filme não encontrado"}
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CreateMovieDto": {
+        "type": "object",
+        "required": ["movie_id", "title", "original_title", "overview", "status", "release_date", "original_language"],
+        "properties": {
+          "movie_id": {"type": "integer"},
+          "title": {"type": "string"},
+          "original_title": {"type": "string"},
+          "overview": {"type": "string"},
+          "tagline": {"type": "string"},
+          "status": {"type": "string"},
+          "release_date": {"type": "string", "format": "date"},
+          "runtime": {"type": "integer"},
+          "adult": {"type": "boolean"},
+          "original_language": {"type": "string"},
+          "homepage": {"type": "string"},
+          "imdb_id": {"type": "string"},
+          "budget": {"type": "integer"},
+          "revenue": {"type": "integer"},
+          "vote_average": {"type": "number"},
+          "vote_count": {"type": "integer"},
+          "popularity": {"type": "number"},
+          "backdrop_path": {"type": "string"},
+          "poster_path": {"type": "string"},
+          "genres": {"type": "array", "items": {"type": "string"}},
+          "production_companies": {"type": "array", "items": {"type": "string"}},
+          "production_countries": {"type": "array", "items": {"type": "string"}},
+          "spoken_languages": {"type": "array", "items": {"type": "string"}},
+          "keywords": {"type": "array", "items": {"type": "string"}}
+        }
+      },
+      "UpdateMovieDto": {
+        "type": "object",
+        "properties": {
+          "$ref": "#/components/schemas/CreateMovieDto"
+        }
+      }
+    }
+  }
+} 
