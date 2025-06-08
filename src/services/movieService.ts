@@ -81,15 +81,24 @@ export class MovieService {
     });
   }
 
-  async searchMovies(query: string) {
+  async searchMovies(query?: string, genre?: string) {
+    const where: any = {};
+  
+    if (query) {
+      where.OR = [
+        { title: { contains: query, mode: 'insensitive' } },
+        { original_title: { contains: query, mode: 'insensitive' } },
+        { overview: { contains: query, mode: 'insensitive' } }
+      ];
+    }
+  
+    if (genre) {
+      // Supondo que genres é um array de strings
+      where.genres = { has: genre };
+    }
+  
     return await prisma.movie.findMany({
-      where: {
-        OR: [
-          { title: { contains: query, mode: 'insensitive' } },
-          { original_title: { contains: query, mode: 'insensitive' } },
-          { overview: { contains: query, mode: 'insensitive' } }
-        ]
-      },
+      where,
       take: 20
     });
   }

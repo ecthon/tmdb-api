@@ -90,13 +90,13 @@ export class MovieController {
 
   async searchMovies(req: Request, res: Response) {
     try {
-      const { q } = req.query;
-
-      if (!q) {
-        return res.status(400).json({ error: 'Parâmetro de busca é obrigatório' });
+      const { q, genre } = req.query;
+  
+      if (!q && !genre) {
+        return res.status(400).json({ error: 'Informe pelo menos um parâmetro de busca (nome ou gênero)' });
       }
-
-      const movies = await movieService.searchMovies(q as string);
+  
+      const movies = await movieService.searchMovies(q as string, genre as string);
       return res.json(movies);
     } catch (error) {
       return res.status(500).json({ error: 'Erro ao buscar filmes' });
