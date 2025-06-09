@@ -2,6 +2,27 @@
 
 API para gerenciamento de filmes.
 
+---
+
+## Resumo do Projeto
+
+O projeto **TMDB API** é uma API desenvolvida em Node.js para o gerenciamento de filmes, utilizando banco de dados MongoDB. Ela permite cadastrar, buscar, atualizar, deletar e recomendar filmes, além de fornecer estatísticas sobre os filmes cadastrados. O projeto conta com documentação interativa via Swagger e pode ser executado tanto localmente quanto via Docker.
+
+---
+
+## Funcionalidades Principais
+
+- **Listagem de Filmes:** Permite listar todos os filmes cadastrados, com suporte a paginação e filtros por título, status, ano e se é adulto ou não.
+- **Busca de Filmes:** Possibilita buscar filmes por nome ou gênero, facilitando a localização de títulos específicos.
+- **Recomendação de Filmes:** Gera uma lista de até 10 filmes recomendados com base em critérios de qualidade (nota e popularidade), status (lançados e não adultos), idioma (priorizando português e inglês), diversidade de gêneros e variedade. Os resultados são ordenados e embaralhados para garantir recomendações relevantes e variadas.
+- **Detalhes de um Filme:** Permite buscar informações detalhadas de um filme específico a partir do seu ID.
+- **Cadastro de Filmes:** Possibilita adicionar novos filmes ao banco de dados.
+- **Atualização de Filmes:** Permite atualizar informações de um filme existente.
+- **Remoção de Filmes:** Permite deletar um filme do banco de dados.
+- **Estatísticas por Ano:** Fornece a quantidade de filmes lançados por ano.
+
+---
+
 ## Pré-requisitos
 
 - Node.js (versão X ou superior)
