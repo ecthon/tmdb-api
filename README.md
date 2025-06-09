@@ -21,6 +21,47 @@ npm run dev
 
 O servidor será iniciado na porta 3333.
 
+## Configuração
+
+1. Copie o arquivo `.env.example` para `.env` na raiz do projeto:
+   ```bash
+   cp .env.example .env
+   ```
+2. Preencha o arquivo `.env` com suas credenciais e configurações. Exemplo de variáveis necessárias:
+   ```
+   DATABASE_URL=
+   MONGO_DATABASE=movies_db
+   MONGO_COLLECTION=movies
+   PORT=3333
+   NODE_ENV=development
+   ```
+   - `DATABASE_URL`: URL de conexão com o banco de dados MongoDB.
+   - `MONGO_DATABASE`: Nome do banco de dados.
+   - `MONGO_COLLECTION`: Nome da coleção de filmes.
+   - `PORT`: Porta em que a API será executada (padrão: 3333).
+   - `NODE_ENV`: Ambiente de execução (ex: development, production).
+
+3. Salve o arquivo `.env` antes de iniciar o projeto.
+
+## Rodando com Docker
+
+1. Certifique-se de ter um arquivo `.env` com a variável `DATABASE_URL` na raiz do projeto.
+2. Para buildar a imagem Docker:
+
+```bash
+docker build -t tmdb-api .
+```
+
+3. Para rodar o container (certifique-se de que o .env está na raiz):
+
+```bash
+docker run --env-file .env -p 3333:3333 tmdb-api
+```
+
+A API estará disponível em http://localhost:3333
+
+Se quiser customizar a porta, adicione a variável `PORT` no seu `.env` e ajuste o parâmetro `-p` do Docker. 
+
 ## Documentação Swagger
 
 Acesse a documentação interativa em:  
@@ -46,11 +87,3 @@ garantindo que a recomendação seja relevante, variada e adequada ao público.
 ```bash
 curl http://localhost:3333/filmes/recomendados
 ```
-
-## Contato
-
-Dúvidas ou sugestões: [seu-email@dominio.com]
-
-## Configuração
-
-Copie o arquivo `.env.example` para `.env` e preencha com suas credenciais: 
