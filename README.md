@@ -69,6 +69,10 @@ http://localhost:3333/api-docs
 
 A especificação OpenAPI está disponível no arquivo `swagger.json` na raiz do projeto.
 
+<p align="center">
+  <img src=".github/swagger.png" alt="Swagger Screenshot" width="700" />
+</p>
+
 ## Como funciona a recomendação de filmes
 
 A lista de recomendações é gerada a partir dos seguintes critérios:
