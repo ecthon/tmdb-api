@@ -39,4 +39,4 @@ A lista de recomendações é gerada a partir dos seguintes critérios:
 - **Ordenação e variedade:** Os filmes são ordenados por nota, popularidade e, em seguida, embaralhados para trazer variedade a cada requisição.
 - **Limite:** São retornados até 10 filmes recomendados.
 
-Esse processo garante que a recomendação seja relevante, variada e adequada ao público. 
+garantindo que a recomendação seja relevante, variada e adequada ao público. 
