@@ -102,4 +102,76 @@ export class MovieService {
       take: 20
     });
   }
+
+  // Desafio extra
+  async recommendMovies(language?: string) {
+    console.log('Entrou no recommendMovies');
+    // 1. Filtros básicos
+    const where: any = {
+      status: 'Released',
+      adult: false,
+      vote_average: { gte: 6.0 },
+      popularity: { gte: 10 },
+      release_date: {
+        gte: new Date('2020-01-01'),
+        lte: new Date(),
+      },
+    };
+
+    // 2. Priorizar idioma do usuário ou inglês
+    if (language) {
+      where.OR = [
+        { original_language: language },
+        { original_language: 'en' },
+      ];
+    } else {
+      where.OR = [
+        { original_language: 'pt' },
+        { original_language: 'en' },
+      ];
+    }
+
+    // 3. Buscar muitos filmes para garantir diversidade
+    const filmes = await prisma.movie.findMany({
+      where,
+      orderBy: [
+        { vote_average: 'desc' },
+        { popularity: 'desc' },
+      ],
+      take: 100, // Buscar mais para filtrar depois
+    });
+
+    // 4. Balancear gêneros
+    const generoCount: Record<string, number> = {};
+    const recomendados: any[] = [];
+    for (const filme of filmes) {
+      if (!filme.genres || filme.genres.length === 0) continue;
+      // Pega o primeiro gênero como principal
+      const principal = filme.genres[0];
+      if (!principal) continue;
+      if (!generoCount[principal]) generoCount[principal] = 0;
+      if (generoCount[principal] >= 3) continue; // Limite por gênero
+      recomendados.push(filme);
+      generoCount[principal]++;
+      if (recomendados.length >= 10) break;
+    }
+
+    // 5. Se não tiver 10, completa com outros filmes aleatórios
+    if (recomendados.length < 10) {
+      const restantes = filmes.filter(f => !recomendados.includes(f));
+      while (recomendados.length < 10 && restantes.length > 0) {
+        const idx = Math.floor(Math.random() * restantes.length);
+        recomendados.push(restantes[idx]);
+        restantes.splice(idx, 1);
+      }
+    }
+
+    // 6. Embaralha para dar variedade
+    for (let i = recomendados.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [recomendados[i], recomendados[j]] = [recomendados[j], recomendados[i]];
+    }
+
+    return recomendados.slice(0, 10);
+  }
 }

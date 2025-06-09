@@ -6,6 +6,7 @@ const movieService = new MovieService();
 
 export class MovieController {
   async getAllMovies(req: Request, res: Response) {
+    console.log('Entrou no MovieController');
     try {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
@@ -102,4 +103,16 @@ export class MovieController {
       return res.status(500).json({ error: 'Erro ao buscar filmes' });
     }
   }
+
+  async recommendMovies(req: Request, res: Response) {
+    try {
+      const language = req.query.language as string | undefined;
+      const result = await movieService.recommendMovies(language);
+      res.json(result);
+    } catch (error) {
+      console.error('Erro em recommendMovies:', error);
+      res.status(500).json({ error: 'Erro ao selecionar filmes' });
+    }
+  }
+
 }
