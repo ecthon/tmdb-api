@@ -28,17 +28,19 @@ export class MovieController {
     try {
       const { id } = req.params;
       if (!id) {
-        return res.status(400).json({ error: 'ID é obrigatório' });
+        res.status(400).json({ error: 'ID é obrigatório' });
+        return;
       }
       const movie = await movieService.getMovieById(id);
 
       if (!movie) {
-        return res.status(404).json({ error: 'Filme não encontrado' });
+        res.status(404).json({ error: 'Filme não encontrado' });
+        return;
       }
 
-      return res.json(movie);
+      res.json(movie);
     } catch (error) {
-      return res.status(500).json({ error: 'Erro ao buscar filme' });
+      res.status(500).json({ error: 'Erro ao buscar filme' });
     }
   }
 
@@ -46,12 +48,13 @@ export class MovieController {
     try {
       const movieData = req.body;
       const movie = await movieService.createMovie(movieData);
-      return res.status(201).json(movie);
+      res.status(201).json(movie);
     } catch (error: any) {
       if (error.code === 'P2002') {
-        return res.status(400).json({ error: 'Filme com este movie_id já existe' });
+        res.status(400).json({ error: 'Filme com este movie_id já existe' });
+        return;
       }
-      return res.status(500).json({ error: 'Erro ao criar filme' });
+      res.status(500).json({ error: 'Erro ao criar filme' });
     }
   }
 
@@ -59,17 +62,19 @@ export class MovieController {
     try {
       const { id } = req.params;
       if (!id) {
-        return res.status(400).json({ error: 'ID é obrigatório' });
+        res.status(400).json({ error: 'ID é obrigatório' });
+        return;
       }
       const updateData = req.body;
 
       const movie = await movieService.updateMovie(id, updateData);
-      return res.json(movie);
+      res.json(movie);
     } catch (error: any) {
       if (error.code === 'P2025') {
-        return res.status(404).json({ error: 'Filme não encontrado' });
+        res.status(404).json({ error: 'Filme não encontrado' });
+        return;
       }
-      return res.status(500).json({ error: 'Erro ao atualizar filme' });
+      res.status(500).json({ error: 'Erro ao atualizar filme' });
     }
   }
 
@@ -77,15 +82,17 @@ export class MovieController {
     try {
       const { id } = req.params;
       if (!id) {
-        return res.status(400).json({ error: 'ID é obrigatório' });
+        res.status(400).json({ error: 'ID é obrigatório' });
+        return;
       }
       await movieService.deleteMovie(id);
-      return res.status(204).send();
+      res.status(204).send();
     } catch (error: any) {
       if (error.code === 'P2025') {
-        return res.status(404).json({ error: 'Filme não encontrado' });
+        res.status(404).json({ error: 'Filme não encontrado' });
+        return;
       }
-      return res.status(500).json({ error: 'Erro ao deletar filme' });
+      res.status(500).json({ error: 'Erro ao deletar filme' });
     }
   }
 
@@ -94,13 +101,14 @@ export class MovieController {
       const { q, genre } = req.query;
   
       if (!q && !genre) {
-        return res.status(400).json({ error: 'Informe pelo menos um parâmetro de busca (nome ou gênero)' });
+        res.status(400).json({ error: 'Informe pelo menos um parâmetro de busca (nome ou gênero)' });
+        return;
       }
   
       const movies = await movieService.searchMovies(q as string, genre as string);
-      return res.json(movies);
+      res.json(movies);
     } catch (error) {
-      return res.status(500).json({ error: 'Erro ao buscar filmes' });
+      res.status(500).json({ error: 'Erro ao buscar filmes' });
     }
   }
 
@@ -112,6 +120,15 @@ export class MovieController {
     } catch (error) {
       console.error('Erro em recommendMovies:', error);
       res.status(500).json({ error: 'Erro ao selecionar filmes' });
+    }
+  }
+
+  async getMoviesPerYear(req: Request, res: Response) {
+    try {
+      const result = await movieService.getMoviesPerYear();
+      res.json(result);
+    } catch (error) {
+      res.status(500).json({ error: 'Erro ao buscar filmes por ano' });
     }
   }
 

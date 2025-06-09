@@ -174,4 +174,28 @@ export class MovieService {
 
     return recomendados.slice(0, 10);
   }
+
+  async getMoviesPerYear() {
+    // Prisma aggregation para agrupar por ano
+    const result = await prisma.movie.groupBy({
+      by: ['release_date'],
+      _count: { _all: true },
+    });
+
+    // Agrupa por ano
+    const yearMap: Record<number, number> = {};
+    for (const item of result) {
+      const year = new Date(item.release_date).getFullYear();
+      if (!yearMap[year]) yearMap[year] = 0;
+      yearMap[year] += item._count._all;
+    }
+    // Filtra para os últimos 10 anos
+    const currentYear = new Date().getFullYear();
+    const minYear = currentYear - 9;
+    const timelineData = Object.entries(yearMap)
+      .map(([year, movies]) => ({ year: Number(year), movies }))
+      .filter(item => item.year >= minYear && item.year <= currentYear)
+      .sort((a, b) => a.year - b.year);
+    return timelineData;
+  }
 }
