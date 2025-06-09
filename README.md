@@ -2,6 +2,11 @@
 
 API para gerenciamento de filmes.
 
+## Pré-requisitos
+
+- Node.js (versão X ou superior)
+- npm
+
 ## Instalação
 
 ```bash
@@ -14,17 +19,12 @@ npm install
 npm run dev
 ```
 
+O servidor será iniciado na porta 3333.
+
 ## Documentação Swagger
 
-A documentação interativa da API está disponível via Swagger UI.
-
-Após iniciar o servidor, acesse:
-
-```
+Acesse a documentação interativa em:  
 http://localhost:3333/api-docs
-```
-
-Você poderá visualizar e testar todas as rotas da API diretamente pelo navegador.
 
 A especificação OpenAPI está disponível no arquivo `swagger.json` na raiz do projeto.
 
@@ -39,4 +39,18 @@ A lista de recomendações é gerada a partir dos seguintes critérios:
 - **Ordenação e variedade:** Os filmes são ordenados por nota, popularidade e, em seguida, embaralhados para trazer variedade a cada requisição.
 - **Limite:** São retornados até 10 filmes recomendados.
 
-garantindo que a recomendação seja relevante, variada e adequada ao público. 
+garantindo que a recomendação seja relevante, variada e adequada ao público.
+
+## Exemplo de requisição
+
+```bash
+curl http://localhost:3333/filmes/recomendados
+```
+
+## Contato
+
+Dúvidas ou sugestões: [seu-email@dominio.com]
+
+## Configuração
+
+Copie o arquivo `.env.example` para `.env` e preencha com suas credenciais: 
