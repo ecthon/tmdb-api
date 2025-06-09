@@ -85,5 +85,5 @@ garantindo que a recomendação seja relevante, variada e adequada ao público.
 ## Exemplo de requisição
 
 ```bash
-curl http://localhost:3333/filmes/recomendados
+curl http://localhost:3333/api/movies
 ```
