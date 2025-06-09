@@ -100,6 +100,41 @@
           "404": {"description": "Filme não encontrado"}
         }
       }
+    },
+    "/api/movies/recommend": {
+      "get": {
+        "summary": "Recomenda filmes de acordo com critérios de qualidade, popularidade, idioma e diversidade de gêneros.",
+        "description": "Retorna até 10 filmes recomendados. Pode receber o parâmetro opcional 'language' para priorizar o idioma.",
+        "parameters": [
+          {
+            "name": "language",
+            "in": "query",
+            "description": "Idioma prioritário para recomendação (ex: 'pt', 'en').",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de filmes recomendados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Movie"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro interno ao selecionar filmes"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -138,6 +173,25 @@
         "type": "object",
         "properties": {
           "$ref": "#/components/schemas/CreateMovieDto"
+        }
+      },
+      "Movie": {
+        "type": "object",
+        "properties": {
+          "movie_id": { "type": "integer" },
+          "title": { "type": "string" },
+          "original_title": { "type": "string" },
+          "overview": { "type": "string" },
+          "status": { "type": "string" },
+          "release_date": { "type": "string", "format": "date" },
+          "adult": { "type": "boolean" },
+          "original_language": { "type": "string" },
+          "vote_average": { "type": "number" },
+          "popularity": { "type": "number" },
+          "genres": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
         }
       }
     }
